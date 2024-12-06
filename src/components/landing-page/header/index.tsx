@@ -10,6 +10,7 @@ import { menus } from "../data";
 import { ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/components/lib/utils";
 import NavMenu from "./nav-menu";
+import ProfileInfo from "./profile-info";
 const Header = () => {
   const [scroll, setScroll] = useState<boolean>(false);
   useEffect(() => {
@@ -24,6 +25,7 @@ const Header = () => {
   if (!isDesktop) {
     return (
       <>
+        <ProfileInfo />
         <div
           className={
             scroll
