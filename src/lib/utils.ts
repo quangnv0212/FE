@@ -1,13 +1,13 @@
+import authApiRequest from "@/apiRequests/auth";
 import { toast } from "@/components/ui/use-toast";
+import { defaultLocale } from "@/config";
+import { DishStatus, OrderStatus, TableStatus } from "@/constants/type";
 import { EntityError } from "@/lib/http";
+import { TokenPayload } from "@/types/jwt.types";
 import { type ClassValue, clsx } from "clsx";
+import { jwtDecode } from "jwt-decode";
 import { UseFormSetError } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
-import { jwtDecode } from "jwt-decode";
-import authApiRequest from "@/apiRequests/auth";
-import { DishStatus, OrderStatus, Role, TableStatus } from "@/constants/type";
-import envConfig, { defaultLocale } from "@/config";
-import { TokenPayload } from "@/types/jwt.types";
 // import guestApiRequest from "@/apiRequests/guest";
 import { format } from "date-fns";
 import { BookX, CookingPot, HandCoins, Loader, Truck } from "lucide-react";
@@ -166,13 +166,7 @@ export const getTableLink = ({
   token: string;
   tableNumber: number;
 }) => {
-  return (
-    envConfig.NEXT_PUBLIC_URL +
-    `/${defaultLocale}/tables/` +
-    tableNumber +
-    "?token=" +
-    token
-  );
+  return `/${defaultLocale}/tables/` + tableNumber + "?token=" + token;
 };
 
 export const decodeToken = (token: string) => {
