@@ -11,7 +11,6 @@ export function middleware(request: NextRequest) {
   const response = handleI18nRouting(request);
   return response;
 }
-
 export const config = {
   // Match only internationalized pathnames
   matcher: ["/", "/(vi|en)/:path*"],

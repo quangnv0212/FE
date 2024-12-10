@@ -3,13 +3,15 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/theme-provider";
-
+type Params = Promise<{
+  locale: string;
+}>;
 export default async function LocaleLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Params;
 }) {
   const { locale } = await params;
 
