@@ -1,7 +1,5 @@
 "use client";
 import Image from "next/image";
-import auth3Light from "@/public/images/auth/auth3-light.png";
-import auth3Dark from "@/public/images/auth/auth3-dark.png";
 import LogInForm from "@/components/login-form";
 const LoginPage = () => {
   return (

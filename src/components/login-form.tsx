@@ -4,49 +4,57 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn } from "@/lib/utils";
+import { cn, handleErrorApi } from "@/lib/utils";
+import { useLoginMutation } from "@/queries/useAuth";
+import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
-import { StitchesLogoIcon } from "@radix-ui/react-icons";
+import { IconJarLogoIcon, StitchesLogoIcon } from "@radix-ui/react-icons";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { toast } from "./ui/use-toast";
+import { useRouter } from "@/navigation";
 
-const schema = z.object({
-  email: z.string().email({ message: "Your email is invalid." }),
-  password: z.string().min(4),
-});
 const LogInForm = () => {
-  const [isPending, startTransition] = React.useTransition();
   const [passwordType, setPasswordType] = React.useState("password");
   const togglePasswordType = () => {
-    if (passwordType === "text") {
-      setPasswordType("password");
-    } else if (passwordType === "password") {
-      setPasswordType("text");
-    }
+    setPasswordType((prev) => (prev === "password" ? "text" : "password"));
   };
   const {
     register,
     handleSubmit,
-    reset,
+    setError,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(schema),
-    mode: "all",
+    resolver: zodResolver(LoginBody),
     defaultValues: {
-      email: "dashtail@codeshaper.net",
-      password: "password",
+      email: "quangnv.0212@gmail.com",
+      password: "Ngulol69*",
     },
   });
-  const [isVisible, setIsVisible] = React.useState(false);
 
-  const toggleVisibility = () => setIsVisible(!isVisible);
   const isDesktop2xl = useMediaQuery("(max-width: 1530px)");
+  const loginMutation = useLoginMutation();
+  const router = useRouter();
 
-  const onSubmit = (data: any) => {};
+  const onSubmit = async (data: LoginBodyType) => {
+    if (loginMutation.isPending) return;
+    try {
+      const result = await loginMutation.mutateAsync(data);
+      toast({
+        description: result.payload.message,
+      });
+      // setRole(result.payload.data.account.role);
+      router.push("/manage/dashboard");
+    } catch (error: any) {
+      handleErrorApi({
+        error,
+        setError,
+      });
+    }
+  };
   return (
     <div className="w-full ">
       <Link href="/dashboard" className="inline-block">
@@ -66,7 +74,7 @@ const LogInForm = () => {
             id="email"
             size={!isDesktop2xl ? "xl" : "lg"}
             placeholder=" "
-            disabled={isPending}
+            disabled={loginMutation.isPending}
             {...register("email")}
             className={cn("peer", {
               "border-destructive": errors.email,
@@ -95,7 +103,7 @@ const LogInForm = () => {
             id="password"
             size={!isDesktop2xl ? "xl" : "lg"}
             placeholder=" "
-            disabled={isPending}
+            disabled={loginMutation.isPending}
             {...register("password")}
             className={cn("peer", {
               "border-destructive": errors.password,
@@ -113,7 +121,7 @@ const LogInForm = () => {
             Password
           </Label>
           <div
-            className="absolute top-1/2 -translate-y-1/2 ltr:right-4 rtl:left-4 cursor-pointer"
+            className="absolute top-1/3 right-2  cursor-pointer"
             onClick={togglePasswordType}
           >
             {passwordType === "password" ? (
@@ -152,13 +160,13 @@ const LogInForm = () => {
         </div>
         <Button
           className="w-full"
-          disabled={isPending}
+          disabled={loginMutation.isPending}
           size={!isDesktop2xl ? "lg" : "md"}
         >
-          {isPending && (
+          {loginMutation.isPending && (
             <Loader2 className="ltr:mr-2 rtl:ml-2 h-4 w-4 animate-spin" />
           )}
-          {isPending ? "Loading..." : "Sign In"}
+          {loginMutation.isPending ? "Loading..." : "Sign In"}
         </Button>
       </form>
       <div className="2xl:mt-8 mt-6 flex flex-wrap justify-center gap-4">
@@ -166,18 +174,16 @@ const LogInForm = () => {
           type="button"
           size="icon"
           variant="outline"
-          className="rounded-full  border-default-300 hover:bg-background"
-          disabled={isPending}
-          onClick={() => {}}
+          className="rounded-full  border-default-300"
+          disabled={loginMutation.isPending}
         >
-          <Icon icon="heroicons:google" className="w-5 h-5" />
+          <IconJarLogoIcon className="w-5 h-5" />
         </Button>
         <Button
           type="button"
           size="icon"
           variant="outline"
-          className="rounded-full border-default-300 hover:bg-background"
-          disabled={isPending}
+          className="rounded-full border-default-300"
           onClick={() => {}}
         >
           <Icon icon="heroicons:facebook" className="w-5 h-5" />
@@ -186,7 +192,7 @@ const LogInForm = () => {
           type="button"
           size="icon"
           variant="outline"
-          className="rounded-full border-default-300 hover:bg-background"
+          className="rounded-full border-default-300"
           onClick={() => {}}
         >
           <Icon icon="heroicons:twitter" className="w-5 h-5" />
@@ -195,7 +201,7 @@ const LogInForm = () => {
           type="button"
           size="icon"
           variant="outline"
-          className="rounded-full  border-default-300 hover:bg-background"
+          className="rounded-full  border-default-300"
           onClick={() => {}}
         >
           <Icon icon="heroicons:github" className="w-5 h-5" />

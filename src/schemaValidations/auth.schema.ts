@@ -1,4 +1,3 @@
-import { Role } from "@/constants/type";
 import z from "zod";
 
 export const LoginBody = z
@@ -13,15 +12,9 @@ export const LoginBody = z
 export type LoginBodyType = z.TypeOf<typeof LoginBody>;
 
 export const LoginRes = z.object({
-  data: z.object({
-    accessToken: z.string(),
-    refreshToken: z.string(),
-    account: z.object({
-      id: z.number(),
-      name: z.string(),
-      email: z.string(),
-      role: z.enum([Role.Owner, Role.Employee]),
-    }),
+  result: z.object({
+    access_token: z.string(),
+    refresh_token: z.string(),
   }),
   message: z.string(),
 });
