@@ -8,7 +8,7 @@ import ThemeButton from "@/components/partials/header/theme-button";
 import { Icon } from "@iconify/react";
 import { menus } from "../data";
 import { ChevronDown, Menu } from "lucide-react";
-import { cn } from "@/components/lib/utils";
+import { cn } from "@/lib/utils";
 import NavMenu from "./nav-menu";
 import ProfileInfo from "./profile-info";
 const Header = () => {

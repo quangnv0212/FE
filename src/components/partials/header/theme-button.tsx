@@ -1,6 +1,7 @@
 "use client";
 
-import { cn } from "@/components/lib/utils";
+import { cn } from "@/lib/utils";
+
 import { Moon, Sun, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {

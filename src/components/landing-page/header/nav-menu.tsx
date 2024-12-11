@@ -1,4 +1,4 @@
-import { cn } from "@/components/lib/utils";
+import { cn } from "@/lib/utils";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";

@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
+import DashBoardLayoutProvider from "./dashboard-layout-provider";
 
 type Params = Promise<{
   locale: string;
@@ -33,17 +34,19 @@ export default async function LocaleLayout({
     <html lang={locale} suppressHydrationWarning>
       <body>
         <AppProvider>
-          <NextIntlClientProvider messages={messages}>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-            </ThemeProvider>
-            <Toaster />
-          </NextIntlClientProvider>
+            <NextIntlClientProvider messages={messages}>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+          <DashBoardLayoutProvider trans={locale}>
+                {children}
+          </DashBoardLayoutProvider>
+              </ThemeProvider>
+              <Toaster />
+            </NextIntlClientProvider>
         </AppProvider>
       </body>
     </html>

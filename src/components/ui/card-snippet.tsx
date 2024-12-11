@@ -21,12 +21,11 @@ import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { themes } from "@/config/thems";
 import { useTheme } from "next-themes";
 import { hslToHex, hexToRGB } from "@/lib/utils";
-import { useThemeStore } from "@/store";
-
+import { useThemeStore } from "@/store/store";
 
 interface CardSnippetProps {
   title?: string;
-  children: React.ReactNode
+  children: React.ReactNode;
   code?: string;
 }
 const CardSnippet = ({ title, code, children }: CardSnippetProps) => {
@@ -38,12 +37,14 @@ const CardSnippet = ({ title, code, children }: CardSnippetProps) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
   const newTheme = themes.find((theme) => theme.name === config);
 
-  const hslPrimary = `hsla(${newTheme?.cssVars[mode === "dark" ? "dark" : "light"][
-    "secondary-foreground"
-  ]
-    })`;
-  const hslPrimary2 = `hsla(${newTheme?.cssVars[mode === "dark" ? "dark" : "light"].secondary
-    })`;
+  const hslPrimary = `hsla(${
+    newTheme?.cssVars[mode === "dark" ? "dark" : "light"][
+      "secondary-foreground"
+    ]
+  })`;
+  const hslPrimary2 = `hsla(${
+    newTheme?.cssVars[mode === "dark" ? "dark" : "light"].secondary
+  })`;
 
   const hexPrimary = hslToHex(hslPrimary);
   const hexPrimary2 = hslToHex(hslPrimary2);
